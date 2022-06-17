@@ -15,6 +15,16 @@ public class GameOverController : MonoBehaviour
         playAgainButton.onClick.AddListener(RestartLevel);
         Debug.Log("Awoke");
     }
+<<<<<<< Updated upstream
+=======
+
+    private void GoToLobby()
+    {
+        Destroy(gameObject);
+        SceneManager.LoadScene(0);
+    }
+
+>>>>>>> Stashed changes
     // Show the GameOver Image & Button
     public void PlayerDied()
     {
