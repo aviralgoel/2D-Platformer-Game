@@ -1156,6 +1156,16 @@ PrefabInstance:
       propertyPath: gameOverController
       value: 
       objectReference: {fileID: 7732984962612624722}
+    - target: {fileID: 6630859324141491983, guid: 3dbee4d60ecf4634f8ff50a2db266630,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 2.161821
+      objectReference: {fileID: 0}
+    - target: {fileID: 6630859324141491983, guid: 3dbee4d60ecf4634f8ff50a2db266630,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: 0.9866078
+      objectReference: {fileID: 0}
     - target: {fileID: 7906602336937882112, guid: 3dbee4d60ecf4634f8ff50a2db266630,
         type: 3}
       propertyPath: m_Name

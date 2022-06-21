@@ -147,14 +147,14 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Crouch", true);
             // hard coded values, observed from the Scene view.
             // ? What is the alternative where we need not depend on hard coded values?
-            collider2d.size = new Vector2(0.6311399f, 1.327474f);
-            collider2d.offset = new Vector2(0.01034069f, 0.5875177f);
+            //collider2d.size = new Vector2(0.6311399f, 1.327474f);
+            //collider2d.offset = new Vector2(0.01034069f, 0.5875177f);
         }
         else
         {
             animator.SetBool("Crouch", false);
-            collider2d.size = new Vector2(0.6311399f,2.108599f);
-            collider2d.offset = new Vector2(0.01034069f, 0.9780799f);
+            //collider2d.size = new Vector2(0.6311399f,2.108599f);
+           // collider2d.offset = new Vector2(0.01034069f, 0.9780799f);
         }
 
     }
