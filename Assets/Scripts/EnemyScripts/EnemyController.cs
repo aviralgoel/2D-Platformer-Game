@@ -23,8 +23,7 @@ public class EnemyController : MonoBehaviour
     {
         transform.position = patrolPointBegin.position; //spawn
         bIsGoingLeft = ((patrolPointBegin.transform.position.x - patrolPointEnd.transform.position.x) > 0); // true
-        Debug.Log((patrolPointBegin.transform.position.x - patrolPointEnd.transform.position.x));
-        Debug.Log(bIsGoingLeft);
+       
         spriteRenderer.flipX = bIsGoingLeft;
         movementSpeed = 1f;
         damage = 10f;
@@ -45,7 +44,9 @@ public class EnemyController : MonoBehaviour
         transform.Translate(directionTranslation);
         float x = Vector2.Distance(transform.position, patrolPointEnd.position);
         float y = Vector2.Distance(transform.position, patrolPointBegin.position);
-        if(x<0.05) //you are at the end
+        Debug.Log("X:" + x);
+        Debug.Log("Y:" + y);
+        if (x<0.05) //you are at the end
         {
             bIsGoingLeft = !((patrolPointBegin.transform.position.x - patrolPointEnd.transform.position.x) > 0);
         }
@@ -65,10 +66,7 @@ public class EnemyController : MonoBehaviour
             isTouchingPlayer = true;
             anim.SetBool("IsTouchingPlayer", isTouchingPlayer);
         }
-        if(collision.gameObject.CompareTag("Enemy"))
-        {
-            Debug.Log("Touching another enemy!");
-        }
+
         
     }
     private void OnCollisionExit2D(Collision2D collision)
