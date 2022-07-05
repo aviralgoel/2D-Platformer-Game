@@ -18,10 +18,6 @@ public class LevelLoader : MonoBehaviour
     private void Start()
     {
         LevelStatus levelStatus = LevelManager.Instance.getLevelStatus(levelName);
-        if (levelStatus == LevelStatus.Locked)
-        {
-            button.interactable = false;
-        }
     }
 
     private void onClick()
@@ -29,10 +25,13 @@ public class LevelLoader : MonoBehaviour
         LevelStatus levelStatus = LevelManager.Instance.getLevelStatus(levelName);
         if (LevelStatus.Unlocked == levelStatus || LevelStatus.Completed == levelStatus)
         {
+            SoundManager.Instance.Play(Sounds.ButtonClickUnlocked);
             SceneManager.LoadScene(levelName);
+
         }
         else
         {
+            SoundManager.Instance.Play(Sounds.ButtonClickLocked);
             Debug.Log("Level is locked!");
         }
             

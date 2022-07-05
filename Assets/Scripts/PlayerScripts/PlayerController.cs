@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     public Animator animator;
+    public ParticleSystem particleEffect;
     public Transform spawnPoint;
     public BoxCollider2D collider2d;
     public ScoreController scoreController;
@@ -16,8 +17,10 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private bool isGrounded;
     private bool isWalking;
+    public bool isAlive  = true;
     private float health;
-   
+    public float stepRate = 0.5f;
+    public float stepCoolDown;
 
     void Awake()
     {
@@ -32,18 +35,22 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         Respawn();
-        
+         
     }
     void Update()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
         bool spacePressed = Input.GetKeyDown(KeyCode.Space);
-        MoveAnimation(horizontal);
-        MoveCharacter(horizontal, spacePressed);
-        CheckForCrouch();
-        CheckForJump(spacePressed);
+
         IsPlayerAlive();
-        
+        if(isAlive)
+        {
+            MoveAnimation(horizontal);
+            MoveCharacter(horizontal, spacePressed);
+            CheckForCrouch();
+            CheckForJump(spacePressed);
+        }
+       
 
     }
 
@@ -62,13 +69,19 @@ public class PlayerController : MonoBehaviour
         // is player Walking or Running?
         _move.x = (isWalking) ? (_move.x + horizontal * walkSpeed * Time.deltaTime) : (_move.x + horizontal * runSpeed * Time.deltaTime) ;
         transform.position = _move; // update player position
-
+        if(horizontal!=0 && stepCoolDown < 0f)
+        {
+            SoundManager.Instance.Play(Sounds.Walk);
+            stepCoolDown = stepRate;
+        }
+        stepCoolDown -= Time.deltaTime;
         /*In Contrast to the video, this implementation actually work because the player has an RB
          and hence it falls back down to the earth.
         _move.y += vertical * jumpForce * Time.deltaTime;
          Just for consistency, using the implementation in the tutorial.*/
         if (spacePressed && isGrounded)
         {
+            SoundManager.Instance.Play(Sounds.Jump);
             rb.AddForce(new Vector2(0,jumpForce), ForceMode2D.Impulse);
         }
         if(Input.GetKey(KeyCode.LeftShift)) // if Shift Pressed, Player is RUNNING.
@@ -112,7 +125,9 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Dead", true);
         //activate the game over menu
         gameOverController.PlayerDied();
-        this.enabled = false;
+        isAlive = false;
+        
+
     }
 
     private void CheckForJump(bool spacePressed)
@@ -132,14 +147,14 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Crouch", true);
             // hard coded values, observed from the Scene view.
             // ? What is the alternative where we need not depend on hard coded values?
-            collider2d.size = new Vector2(0.6311399f, 1.327474f);
-            collider2d.offset = new Vector2(0.01034069f, 0.5875177f);
+            //collider2d.size = new Vector2(0.6311399f, 1.327474f);
+            //collider2d.offset = new Vector2(0.01034069f, 0.5875177f);
         }
         else
         {
             animator.SetBool("Crouch", false);
-            collider2d.size = new Vector2(0.6311399f,2.108599f);
-            collider2d.offset = new Vector2(0.01034069f, 0.9780799f);
+            //collider2d.size = new Vector2(0.6311399f,2.108599f);
+           // collider2d.offset = new Vector2(0.01034069f, 0.9780799f);
         }
 
     }
@@ -164,9 +179,13 @@ public class PlayerController : MonoBehaviour
     {   
         // basic player stats initialization
         transform.position = spawnPoint.position;
+        Debug.Log("Respawned");
+        particleEffect.Play();
         health = 50;
         walkSpeed = 3;
         runSpeed = 5;
         isWalking = true;
+        isAlive = true;
+        GameManager.Instance.isGamePaused = false;
     }
 }

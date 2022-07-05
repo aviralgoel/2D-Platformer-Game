@@ -17,12 +17,13 @@ public class GameOverController : MonoBehaviour
         playAgainButton.onClick.AddListener(RestartLevel);
         mainMenuButton.onClick.AddListener(GoToLobby);
         nextLevelButton.onClick.AddListener(NextLevel);
-        Debug.Log("Awoke");
+        
         
     }
 
     private void GoToLobby()
     {
+        SoundManager.Instance.Play(Sounds.ButtonClickUnlocked);
         SceneManager.LoadScene(0);
     }
 
@@ -30,17 +31,19 @@ public class GameOverController : MonoBehaviour
     public void PlayerDied()
     {
         gameObject.SetActive(true);
+        
         GameManager.Instance.resetPlayerScore();
     }
     public void LevelCompleted()
     {
         gameObject.SetActive(true);
+        GameManager.Instance.isGamePaused = true;
     }
 
     // Reload the current active level/scene
     public void RestartLevel()
     {
-        Debug.Log("Trying to laod");
+        SoundManager.Instance.Play(Sounds.ButtonClickUnlocked);
         GameManager.Instance.resetPlayerScore();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
@@ -53,7 +56,8 @@ public class GameOverController : MonoBehaviour
     }
     public void NextLevel()
     {
-        Debug.Log("NextLevel");
+       
+        SoundManager.Instance.Play(Sounds.ButtonClickUnlocked);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
 
